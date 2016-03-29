@@ -45,7 +45,7 @@ FixInjectionUpdate::FixInjectionUpdate(LAMMPS *lmp, int narg, char **arg) :
   injection_z = atof(arg[5]);
   injection_rate = atof(arg[6]);// bbl/min
 
-
+/*
   int check_injection_point;
   int check_x, check_y, check_z;
   check_injection_point = 0;
@@ -60,7 +60,7 @@ FixInjectionUpdate::FixInjectionUpdate(LAMMPS *lmp, int narg, char **arg) :
     fprintf(screen, "!! Wrong!!!The injection position is Wrong !!!!, make sure (x%2)=0.5 or (y%2)=0.5 or (z%2)=0.5 ");
     error->one(FLERR,"!! Wrong!!!The injection position is Wrong !!!!, make sure (x%2)=0.5 or (y%2)=0.5 or (z%2)=0.5 ");
   }
-
+*/
 
   /*
   double H =30;//  meter
