@@ -163,6 +163,9 @@ void FixLubricationUpdateBC::cal_channel_pressure()
   double delta_mag;
   int *tag = atom->tag;
   double check_force;
+  double L = domain->lattice->xlattice;
+
+
   for (n=0; n<nlocal; n++){
     if (atype[n] != CONNECTED_CHANNEL_ATOM_TYPE) continue;
     channel_atom = n;
@@ -178,7 +181,7 @@ void FixLubricationUpdateBC::cal_channel_pressure()
 
     if ( (update->ntimestep > 10)  && check_force ==0 ) fprintf(screen, "Wrong!! force is zero !!!%f at timestep %d\n", check_force, update->ntimestep);
 
-    pressure =-( (f0[rock_atom1][0]*delta_x+f0[rock_atom1][1]*delta_y + f0[rock_atom1][2]*delta_z) -(f0[rock_atom2][0]*delta_x+f0[rock_atom2][1]*delta_y + f0[rock_atom2][2]*delta_z) )/2.0/delta_mag;
+    pressure =-( (f0[rock_atom1][0]*delta_x+f0[rock_atom1][1]*delta_y + f0[rock_atom1][2]*delta_z) -(f0[rock_atom2][0]*delta_x+f0[rock_atom2][1]*delta_y + f0[rock_atom2][2]*delta_z) )/2.0/delta_mag/L/L;
 
     if (pressure < 0) {
       //      fprintf(screen, "at t= %.3f, this channel has negative pressure! %.2f (MPa) at x y z %f %f %f \n", update->ntimestep*update->dt, pressure*1.e-6, x0[channel_atom][0],x0[channel_atom][1],x0[channel_atom][2]);
@@ -248,14 +251,14 @@ void FixLubricationUpdateBC::lubrication(){
 
       if (channel_pi > channel_pj){local_w = channel_wi;}
       else {local_w = channel_wj;}
-      vij = (channel_pj-channel_pi)*local_w*local_w*local_w*on_twelve_mu_L;
+      vij = (channel_pj-channel_pi)*local_w*local_w*on_twelve_mu_L;
       if ((channel_pi < 0) || (channel_pj < 0)){fprintf(screen, "Negative pressure!!! pressure calculation is wrong!!!!!!. Check again!! \n");}
       if (fabs(vij) > vij_max){
 	if (vij > 0){vij = vij_max;}
 	else {vij = -vij_max;}  
       }
 
-      dw = vij * (update->dt) /L;
+      dw = vij * local_w * (update->dt) /L;
       channel_width[channel_atomi]+=dw;
     }
   }
@@ -453,6 +456,7 @@ void FixLubricationUpdateBC::bond_break()
   int BC_cond; // unbreakable bonds outside this region
   double *channel_delta_cutoff = atom -> channel_delta_cutoff;
   double cutoff;
+  double L = domain->lattice->xlattice;
 
   for (n =0; n <nlocal; n++) {
     if (atype[n] != ROCK_ATOM_TYPE ) continue; // this is not a rock atom
@@ -507,7 +511,7 @@ void FixLubricationUpdateBC::bond_break()
 	    x[channel_atom][0] = 0.5*(x[rock_atom1][0] + x[rock_atom2][0] );
 	    x[channel_atom][1] = 0.5*(x[rock_atom1][1] + x[rock_atom2][1] );
 	    x[channel_atom][2] = 0.5*(x[rock_atom1][2] + x[rock_atom2][2] );
-	    if (channel_width[channel_atom]+1 >dist) {
+	    if (channel_width[channel_atom] + L > dist) {
 	      bond_type[rock_atom1][m] = WET_CHANNEL_BOND_TYPE;
 	      fprintf(screen, "ntimestep %d  wet channel created, dist %f > cutoff %f at x y z %f %f %f \n", nstep, dist, cutoff, x0[channel_atom][0], x0[channel_atom][1], x0[channel_atom][2]);
 	    }
