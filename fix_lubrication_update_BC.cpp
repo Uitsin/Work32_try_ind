@@ -251,14 +251,14 @@ void FixLubricationUpdateBC::lubrication(){
 
       if (channel_pi > channel_pj){local_w = channel_wi;}
       else {local_w = channel_wj;}
-      vij = (channel_pj-channel_pi)*local_w*local_w*on_twelve_mu_L;
+      vij = (channel_pj-channel_pi)*local_w*local_w*local_w*on_twelve_mu_L;
       if ((channel_pi < 0) || (channel_pj < 0)){fprintf(screen, "Negative pressure!!! pressure calculation is wrong!!!!!!. Check again!! \n");}
       if (fabs(vij) > vij_max){
 	if (vij > 0){vij = vij_max;}
 	else {vij = -vij_max;}  
       }
 
-      dw = vij * local_w * (update->dt) /L;
+      dw = vij * (update->dt) /L;
       channel_width[channel_atomi]+=dw;
     }
   }
