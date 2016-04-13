@@ -97,15 +97,15 @@ void DeltaCutoffRandomness3::command(int narg, char **arg)
     /* generate random number between -0.5 and 0.5: */
     if (check_x){
       random_value =  (double)rand() / (RAND_MAX) -0.5 ;
-      channel_delta_cutoff[n] = (cutoff_mean_x + cutoff_dev_x * random_value) * lattice_mag;
+      channel_delta_cutoff[n] = (cutoff_mean_x + cutoff_dev_x * random_value);
     }
     if (check_y){
       random_value =  (double)rand() / (RAND_MAX) -0.5 ;
-      channel_delta_cutoff[n] = (cutoff_mean_y + cutoff_dev_y * random_value) * lattice_mag;
+      channel_delta_cutoff[n] = (cutoff_mean_y + cutoff_dev_y * random_value);
     }
     if (check_z){
       random_value =  (double)rand() / (RAND_MAX) -0.5 ;
-      channel_delta_cutoff[n] = (cutoff_mean_z + cutoff_dev_z * random_value) * lattice_mag;
+      channel_delta_cutoff[n] = (cutoff_mean_z + cutoff_dev_z * random_value);
     }
 
     ///////////////////////////////////check check_x////////////////////////
