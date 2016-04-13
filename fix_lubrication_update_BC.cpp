@@ -284,6 +284,7 @@ void FixLubricationUpdateBC::channel_update(){
   double **x = atom->x;
   int newton_bond = force->newton_bond;
   int nlocal = atom->nlocal;
+  double L = domain->lattice->xlattice;
 
   //  neighbor->build_topology();
 
@@ -307,25 +308,25 @@ void FixLubricationUpdateBC::channel_update(){
 
     if (newton_bond || rock_atom1 <nlocal){
       if (fabs(delta_x)  == delta_mag) {
-	x[rock_atom1][0] = x[channel_atom][0] +0.5*(1+channel_w) * delta_x/delta_mag;
+	x[rock_atom1][0] = x[channel_atom][0] +0.5*(L+channel_w) * delta_x/delta_mag;
       }
       if (fabs(delta_y)  == delta_mag) {
-	x[rock_atom1][1] = x[channel_atom][1] +0.5*(1+channel_w) * delta_y/delta_mag;
+	x[rock_atom1][1] = x[channel_atom][1] +0.5*(L+channel_w) * delta_y/delta_mag;
       }
       if (fabs(delta_z)  == delta_mag) {
-	x[rock_atom1][2] = x[channel_atom][2] +0.5*(1+channel_w) * delta_z/delta_mag;
+	x[rock_atom1][2] = x[channel_atom][2] +0.5*(L+channel_w) * delta_z/delta_mag;
       }
 
     }
     if (newton_bond || rock_atom2 <nlocal){
       if (fabs(delta_x)  == delta_mag) {
-	x[rock_atom2][0] = x[channel_atom][0] -0.5*(1+channel_w) * delta_x/delta_mag;
+	x[rock_atom2][0] = x[channel_atom][0] -0.5*(L+channel_w) * delta_x/delta_mag;
       }
       if (fabs(delta_y)  == delta_mag) {
-	x[rock_atom2][1] = x[channel_atom][1] -0.5*(1+channel_w) * delta_y/delta_mag;
+	x[rock_atom2][1] = x[channel_atom][1] -0.5*(L+channel_w) * delta_y/delta_mag;
       }
       if (fabs(delta_z)  == delta_mag) {
-	x[rock_atom2][2] = x[channel_atom][2] -0.5*(1+channel_w) * delta_z/delta_mag;
+	x[rock_atom2][2] = x[channel_atom][2] -0.5*(L+channel_w) * delta_z/delta_mag;
       }
     }
   }
